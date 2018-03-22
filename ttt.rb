@@ -158,7 +158,7 @@ class TTTGame
       display_board
       loop do
         current_player_moves
-        display_board_clear
+        clear_screen_and_display_board
         break if board.full? || board.someone_won?
       end
       display_result
@@ -172,6 +172,7 @@ class TTTGame
 
   def welcome_and_settings
     display_welcome_message
+    display_number_of_rounds
     set_names
     set_markers
     set_who_starts
@@ -202,8 +203,8 @@ class TTTGame
     puts "Choose a marker for #{whom} (one character, except empty space):"
     answer = nil
     loop do
-      answer = gets.chomp
-      break if answer.size == 1 && answer != " "
+      answer = gets.chomp.strip
+      break if answer.size == 1
       puts "Sorry, not a valid choice, try again:"
     end
     answer
@@ -254,8 +255,8 @@ class TTTGame
 
   def display_winner(winner)
     winner.increment_score
-    display_board_clear
-    who = winner == human ? "You" : "Computer"
+    clear_screen_and_display_board
+    who = (winner == human ? "You" : "Computer")
     puts "#{who} won!"
   end
 
@@ -273,6 +274,10 @@ class TTTGame
   def display_welcome_message
     clear
     puts "Welcome to Tic Tac Toe!"
+  end
+
+  def display_number_of_rounds
+    puts "We will play till #{Player::FINAL_SCORE} winning rounds."
     puts
   end
 
@@ -298,7 +303,7 @@ class TTTGame
     system("clr") || system("clear")
   end
 
-  def display_board_clear
+  def clear_screen_and_display_board
     clear
     display_board
   end
