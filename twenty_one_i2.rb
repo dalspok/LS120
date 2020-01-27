@@ -1,4 +1,3 @@
-
 class Player
   attr_reader :hand, :name
 
@@ -16,8 +15,13 @@ class Player
   end
 
   def display_hand
-    puts "#{name} (#{total}):"
+    puts "#{name}:"
     puts hand.display
+  end
+
+  def display_backs
+    puts "#{name}:"
+    puts hand.display_backs
   end
 
   def busted?
@@ -68,6 +72,14 @@ class Hand
     puts delimiter_line
   end
 
+  def display_backs
+    puts delimiter_line
+    puts empty_line
+    puts empty_line
+    puts empty_line
+    puts delimiter_line
+  end
+
   def delimiter_line
     ([" ----- "] * cards.size).join(" ")
   end
@@ -76,8 +88,8 @@ class Hand
     (["|     |"] * cards.size).join(" ")
   end
 
-  def card_line
-    cards.map { |card| ["|#{card.to_s.center(5)}|"] }.join(" ")
+  def hidden_card_line
+    (["|  ?  |"] * cards.size).join(" ")
   end
 
   def value
@@ -157,6 +169,13 @@ class Game
     player.display_hand
     puts
     dealer.display_hand
+  end
+
+  def show_initial_cards
+    clear
+    player.display_hand
+    puts
+    dealer.display_backs
   end
 
   def player_turn
@@ -250,7 +269,7 @@ class Game
     loop do
       reset_play
       deal_cards
-      show_cards
+      show_initial_cards
       player_turn
       dealer_turn
       show_result
